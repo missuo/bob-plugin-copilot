@@ -1,0 +1,40 @@
+{
+    "identifier": "me.missuo.copilot.translate",
+    "category": "translate",
+    "version": "1.0.0",
+    "name": "Copilot X",
+    "summary": "Powered by OwO Network Limited",
+    "author": "missuo",
+    "appcast": "https://github.com/missuo/bob-plugin-copilot/raw/main/appcast.json",
+    "homepage": "https://github.com/missuo/bob-plugin-copilot",
+    "icon": "icon.png",
+    "minBobVersion": "0.5.0",
+    "options": [
+      {
+        "identifier": "apiUrl",
+        "type": "text",
+        "title": "API URL",
+        "defaultValue": "https://api.qwq.mx",
+        "desc": "以上是免费 API，请不要修改",
+        "textConfig": {
+            "type": "visible"
+        }
+      },
+      {
+        "identifier": "model",
+        "type": "menu",
+        "title": "模型",
+        "defaultValue": "gpt-4",
+        "menuValues": [
+          {
+            "title": "gpt-4",
+            "value": "gpt-4"
+          },
+          {
+            "title": "gpt-3.5-turbo",
+            "value": "gpt-3.5-turbo"
+          }
+        ]
+      }
+    ]
+  }
