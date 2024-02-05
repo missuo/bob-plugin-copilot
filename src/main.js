@@ -2,7 +2,7 @@
  * @Author: Vincent Young
  * @Date: 2024-02-04 17:42:51
  * @LastEditors: Vincent Young
- * @LastEditTime: 2024-02-04 18:16:28
+ * @LastEditTime: 2024-02-04 19:38:36
  * @FilePath: /bob-plugin-copilot/src/main.js
  * @Telegram: https://t.me/missuo
  * 
@@ -19,7 +19,7 @@ function buildHeader() {
     return {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Bob_IS_BEST"
+        "Authorization": "Fuck_GFW"
     };
 }
 
@@ -68,19 +68,6 @@ function buildRequestBody(model, query) {
         ],
         stream: true,
     };
-}
-
-
-function handleError(query, result) {
-    const { statusCode } = result.response;
-    const reason = (statusCode >= 400 && statusCode < 500) ? "param" : "api";
-    query.onCompletion({
-        error: {
-            type: reason,
-            message: `接口响应错误 - ${result.data.detail}`,
-            addtion: JSON.stringify(result),
-        },
-    });
 }
 
 function handleGeneralError(query, error) {
