@@ -27,11 +27,13 @@ function generatePrompts(query, mode, customizePrompt) {
   let userPrompt = ""
   if (mode == "1") {
     const translationPrefixPrompt = 'Please translate below text within """'
-    const translationPostPrompt = "If the content is a single English word, please translate it like a dictionary, giving as many translation results as possible. And provide two practical example sentences. If the content is an English abbreviation, explain what it stands for. And here's the content";
-    userPrompt = `${translationPrefixPrompt} from "${lang.langMap.get(query.detectFrom) || query.detectFrom}" to "${lang.langMap.get(query.detectTo) || query.detectTo}"`;
+    const correctFormatPrompt = `Your results should not contain """, just output the translated content.`
+    const translatioEnglishPrompt = `If the content is a single English word, please translate it like a dictionary, giving as many translation results as possible, and provide two practical example sentences. If the content is an English abbreviation, explain what it stands for. If the content is a long sentence, just translate it and give the result.`;
+    const translationPostPrompt = `And here's the content`
+    userPrompt = `${translationPrefixPrompt} from "${lang.langMap.get(query.detectFrom) || query.detectFrom}" to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
 
     if (query.detectTo === "wyw" || query.detectTo === "yue") {
-      userPrompt = `${translationPrefixPrompt} to "${lang.langMap.get(query.detectTo) || query.detectTo}"`;
+      userPrompt = `${translationPrefixPrompt} to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
     }
 
     if (
@@ -40,14 +42,17 @@ function generatePrompts(query, mode, customizePrompt) {
       query.detectFrom === "zh-Hant"
     ) {
       if (query.detectTo === "zh-Hant") {
-        userPrompt = `${translationPrefixPrompt} to traditional Chinese`;
+        userPrompt = `${translationPrefixPrompt} to traditional Chinese.`;
       } else if (query.detectTo === "zh-Hans") {
-        userPrompt = `${translationPrefixPrompt} to simplified Chinese`;
+        userPrompt = `${translationPrefixPrompt} to simplified Chinese.`;
       } else if (query.detectTo === "yue") {
-        userPrompt = `${translationPrefixPrompt} to Cantonese`;
+        userPrompt = `${translationPrefixPrompt} to Cantonese.`;
       }
     }
-    userPrompt = `${userPrompt}. ${translationPostPrompt}`
+    if (query.detectFrom === "en") {
+      userPrompt = `${userPrompt} ${translatioEnglishPrompt}`
+    }
+    userPrompt = `${userPrompt} ${correctFormatPrompt} ${translationPostPrompt}`
   }
   else if (mode == "2") {
     userPrompt = `Please polish this sentence without changing its original meaning`;
