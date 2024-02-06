@@ -28,8 +28,8 @@ function generatePrompts(query, mode, customizePrompt) {
   if (mode == "1") {
     const translationPrefixPrompt = 'Please translate below text within """'
     const correctFormatPrompt = `Your results should not contain """, just output the translated content.`
-    const translatioEnglishPrompt = `If the content is a single English word, please translate it like a dictionary, giving as many translation results as possible, and provide two practical example sentences. If the content is an English abbreviation, explain what it stands for. If the content is a long sentence, just translate it and give the result.`;
     const translationPostPrompt = `And here's the content`
+    const translatioEnglishPrompt = `If the content is a single English word, please translate it like a dictionary, giving as many translation results as possible, and provide two English example sentences, along with their corresponding translations. If the content is an English abbreviation, explain what it stands for. If the content is a long sentence, just translate it and give the result.`;
     userPrompt = `${translationPrefixPrompt} from "${lang.langMap.get(query.detectFrom) || query.detectFrom}" to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
 
     if (query.detectTo === "wyw" || query.detectTo === "yue") {
