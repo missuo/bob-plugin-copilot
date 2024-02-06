@@ -22,7 +22,8 @@ new_version="{\"version\": \"$version\", \"desc\": \"None\", \"sha256\": \"$sha2
 json_file='appcast.json'
 json_data=$(cat $json_file)
 
-updated_json=$(echo $json_data | jq --argjson new_version "$new_version" '.versions += [$new_version]')
+#updated_json=$(echo $json_data | jq --argjson new_version "$new_version" '.versions += [$new_version]')
+updated_json=$(echo $json_data | jq --argjson new_version "$new_version" '.versions = [$new_version] + .versions')
 
 echo $updated_json > $json_file
 mkdir dist
