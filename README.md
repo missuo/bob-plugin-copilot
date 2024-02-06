@@ -4,7 +4,7 @@ This is a Copilot AI translation plugin designed for Bob.
 ## Features
 - Support **GPT-4** and **GPT-3.5-Turbo**.
 - Support Stream response.
-- Supports translation, polishing, asking questions, and customizing Prompts.
+- Support translation, polishing, asking questions, and customizing Prompts.
 
 ## Guide
 ### Install Bob
