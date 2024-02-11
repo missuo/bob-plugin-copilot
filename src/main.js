@@ -2,7 +2,7 @@
  * @Author: Vincent Young
  * @Date: 2024-02-04 17:42:51
  * @LastEditors: Vincent Young
- * @LastEditTime: 2024-02-05 22:08:56
+ * @LastEditTime: 2024-02-11 03:39:08
  * @FilePath: /bob-plugin-copilot/src/main.js
  * @Telegram: https://t.me/missuo
  * 
@@ -23,17 +23,18 @@ function buildHeader() {
   };
 }
 
-function generatePrompts(query, mode, customizePrompt) {
+function generatePrompts(query, mode, customizePrompt, wordMode) {
   let userPrompt = ""
-  if (mode == "1") {
-    const translationPrefixPrompt = 'Please translate below text within """'
-    const correctFormatPrompt = `Your results should not contain """, just output the translated content.`
-    const translationPostPrompt = `And here's the content`
-    const translatioEnglishPrompt = `If the content is a single English word, please translate it like a dictionary, giving as many translation results as possible, and provide two English example sentences, along with their corresponding translations. If the content is an English abbreviation, explain what it stands for. If the content is a long sentence, just translate it and give the result.`;
-    userPrompt = `${translationPrefixPrompt} from "${lang.langMap.get(query.detectFrom) || query.detectFrom}" to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
+  if (mode === "1") {
+    let translationPrompt =`'Please translate below text within """.Your results should not contain """, just output the translated content. And here's the content`
+    if (wordMode === "1" && query.detectFrom === "en"){
+      translationPrompt = `If there is only one word in """, please translate this word using dictionary mode, for example, what are the meanings and give a few examples. Example sentences should contain translations in both the source and target languages. Please note that this dictionary should be displayed in the target language.`
+    }
+
+    userPrompt = `${translationPrompt} from "${lang.langMap.get(query.detectFrom) || query.detectFrom}" to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
 
     if (query.detectTo === "wyw" || query.detectTo === "yue") {
-      userPrompt = `${translationPrefixPrompt} to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
+      userPrompt = `${translationPrompt} to "${lang.langMap.get(query.detectTo) || query.detectTo}".`;
     }
 
     if (
@@ -42,25 +43,21 @@ function generatePrompts(query, mode, customizePrompt) {
       query.detectFrom === "zh-Hant"
     ) {
       if (query.detectTo === "zh-Hant") {
-        userPrompt = `${translationPrefixPrompt} to traditional Chinese.`;
+        userPrompt = `${translationPrompt} to traditional Chinese.`;
       } else if (query.detectTo === "zh-Hans") {
-        userPrompt = `${translationPrefixPrompt} to simplified Chinese.`;
+        userPrompt = `${translationPrompt} to simplified Chinese.`;
       } else if (query.detectTo === "yue") {
-        userPrompt = `${translationPrefixPrompt} to Cantonese.`;
+        userPrompt = `${translationPrompt} to Cantonese.`;
       }
     }
-    if (query.detectFrom === "en") {
-      userPrompt = `${userPrompt} ${translatioEnglishPrompt}`
-    }
-    userPrompt = `${userPrompt} ${correctFormatPrompt} ${translationPostPrompt}`
   }
-  else if (mode == "2") {
+  else if (mode === "2") {
     userPrompt = `Please polish this sentence without changing its original meaning`;
   }
-  else if (mode == "3") {
+  else if (mode === "3") {
     userPrompt = `Please answer the following question`;
   }
-  else if (mode == "4") {
+  else if (mode === "4") {
     userPrompt = customizePrompt
   }
 
@@ -68,8 +65,8 @@ function generatePrompts(query, mode, customizePrompt) {
   return userPrompt;
 }
 
-function buildRequestBody(model, mode, customizePrompt, query) {
-  const prompt = generatePrompts(query, mode, customizePrompt);
+function buildRequestBody(model, mode, customizePrompt, query, wordMode) {
+  const prompt = generatePrompts(query, mode, customizePrompt, wordMode);
   return {
     model,
     messages: [{
@@ -150,13 +147,14 @@ function translate(query) {
     model,
     apiUrl = 'https://api.qwq.mx',
     mode,
-    customizePrompt,
+    wordMode,
+    customizePrompt
   } = $option;
 
   const apiUrlPath = "/v1/chat/completions";
 
   const header = buildHeader();
-  const body = buildRequestBody(model, mode, customizePrompt, query);
+  const body = buildRequestBody(model, mode, customizePrompt, query, wordMode);
 
   let targetText = ""; // 初始化拼接结果变量
   let buffer = ""; // 新增 buffer 变量

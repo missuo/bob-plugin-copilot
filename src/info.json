@@ -1,7 +1,7 @@
 {
   "identifier": "me.missuo.copilot.translate",
   "category": "translate",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "name": "Copilot X",
   "summary": "Powered by OwO Network Limited",
   "author": "missuo",
@@ -58,6 +58,23 @@
         {
           "title": "自定义",
           "value": "4"
+        }
+      ]
+    },
+    {
+      "identifier": "wordMode",
+      "type": "menu",
+      "title": "词典模式",
+      "defaultValue": "2",
+      "desc": "如果开启，当输入单个英文单词时，会进行词典模式",
+      "menuValues": [
+        {
+          "title": "开启",
+          "value": "1"
+        },
+        {
+          "title": "关闭",
+          "value": "2"
         }
       ]
     },
