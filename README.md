@@ -1,6 +1,9 @@
 # bob-plugin-copilot
 This is a Copilot AI translation plugin designed for Bob.
 
+## Stop maintenance
+**Thank you for using this plugin. I think its mission is over. It‘s time to say goodbye.**
+
 ## Features
 - Support **GPT-4** and **GPT-3.5-Turbo**.
 - Support stream response.
